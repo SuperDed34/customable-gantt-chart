@@ -1,0 +1,15 @@
+.header-row{
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+}
+
+.headers{
+  min-width: 100px;
+  text-align: center;
+}
+
+.headers.light{
+  border: 0.5px solid #5cc0db;
+  border-right: 0px;
+}

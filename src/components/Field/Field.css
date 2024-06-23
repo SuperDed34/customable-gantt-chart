@@ -1,0 +1,22 @@
+.field{
+  width: 100%;
+  height: fit-content;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+.field-row{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+
+}
+
+
+.field-cells{
+  min-width: 100px;
+}
+.field-cells.light{
+  border-bottom: 1px solid #5cc0db;
+  border-left:1px solid #8de6ff ;
+}

@@ -1,0 +1,12 @@
+.bar {
+  display: flex;
+  position: absolute;
+  padding-left: 1em;
+  cursor: pointer;
+  align-self: center;
+  align-items: center;
+}
+
+.bar-label {
+  width: 100%;
+}
