@@ -3,75 +3,55 @@ import Field from './components/Field/Field'
 import './Gantt.css'
 import Aside from './components/Aside/Aside'
 import Loading from './components/Loading/Loading'
+import { defaultFieldSettings, defaultGlobalSettings, noDefinedTasksPlaceholder } from './defaults'
 
-const defaultGlobalSettings = {
-  timeUnit: 'day',
-  colorMode: 'light',
-  tooltipPosition: 'top'
-}
-const defaultFieldSettings = {
-  rowHeight: 50,
-  emptyColumnsNumber: 20,
-  minRows: 10,
-  listSettings: {
-      hideList: false, 
-      listPosition: 'left',
-      listWdt: 200,
-      listHeaderLabel: 'Tasks'
-  }
-}
+function Gantt({
+  items = noDefinedTasksPlaceholder,
+  fieldSettings,
+  globalSettings
+}) {
+  fieldSettings = fieldSettings ? fieldSettings : defaultFieldSettings
 
-
-function Gantt({ items, fieldSettings=defaultFieldSettings, globalSettings=defaultGlobalSettings }) {
-
-  if (!items) {
-    items = [
-        {
-          id: 1,
-          label: 'No defined tasks',
-          startDate: new Date('2024-05-01').valueOf(),
-          endDate: new Date('2024-05-10').valueOf(),
-          barStyle: {
-            position: 'absolute',
-            width: '100%',
-            height: '1900%',
-            fontSize: '100px',
-            backgroundColor: 'green',
-            zIndex: '1',
-            textAlign: 'center',
-          }
-        },
-    ]
-  }
 
   const { listPosition } = fieldSettings.listSettings
   const [aside, setAside] = useState()
   const [settings, setSettings] = useState()
   const [loading, setLoading] = useState(true)
+  const [globalStyle, setGlobalStyle] = useState()
 
   useEffect(() => {
-    setSettings(globalSettings)
+    setSettings({...defaultGlobalSettings, ...globalSettings })
     setAside(listPosition)
+    setGlobalStyle(globalSettings.globalStyle ?? defaultGlobalSettings.globalStyle)
     setLoading(false)
   }, [globalSettings, listPosition])
 
   const listPos = aside === 'left' ? 'row' : 'row-reverse'
 
   const View = () => {
-
+    const style = {
+      ...globalStyle[globalSettings.colorMode].gantt,
+      flexDirection: listPos,
+      margin: "0 auto",
+      width: '90vw',
+      height: '90vh',
+      display: 'flex',
+    }
   return (
-    <div className="gantt" style={{ flexDirection: listPos }}>
+    <div className="gantt" style={style}>
       <Aside
         items={items}
         fieldSettings={fieldSettings}
-        colorMode={settings ? settings.colorMode : 'light'}
+        globalStyle={globalStyle[globalSettings.colorMode].aside}
+        colorMode={settings.colorMode}
       />
       <Field
         items={items}
         fieldSettings={fieldSettings}
-        timeUnit={globalSettings.timeUnit}
-        colorTheme={settings ? settings.colorMode : 'light'}
-        tooltipPosition={settings ? settings.tooltipPosition : 'top'}
+        globalStyle={globalStyle[globalSettings.colorMode]}
+        timeUnit={settings.timeUnit}
+        colorTheme={settings.colorMode}
+        tooltipPosition={settings.tooltipPosition}
       />
       </div>
   )

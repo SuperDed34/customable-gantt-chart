@@ -2,13 +2,12 @@ import { useEffect, useRef, useState} from 'react'
 import './Bar.css'
 import { Tooltip } from '@mui/material'
 import { timeStampHandler, getMonthsBetween } from '../../services/dateHandlerService'
+import { defaultBarStyle, defaultLabelStyle } from '../../defaults'
 
-const defaultStyle = { backgroundColor: 'black', borderRadius: '15px', height: '75%', borderColor: 'red'};
-const defaultLabelStyle = { color: 'white', fontFamily: 'Roboto', fontSize: '0.9rem' }
 const defaultFunc = (e) => alert(`No callback defined, this is default callback, you're pressed bar with ID: ${e.currentTarget.id}`)
 
+const Bar = ({ item, startCell, lastCell, step, tooltipPosition, tUnit, colorTheme }) => {
 
-const Bar = ({ item, startCell, lastCell, step, tooltipPosition, tUnit, }) => {
   const [label, setLabel] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -21,6 +20,7 @@ const Bar = ({ item, startCell, lastCell, step, tooltipPosition, tUnit, }) => {
   const [TTPosition, setTTPosition] = useState(null)
   const [timeUnit, setTimeUnit] = useState(null)
   const [callback, setCallback] = useState(null)
+  const [colorMode, setColorMode] = useState()
 
   const textRef = useRef(null)
 
@@ -68,17 +68,18 @@ const Bar = ({ item, startCell, lastCell, step, tooltipPosition, tUnit, }) => {
     if (item != null) {
       setStartDate(item.startDate)
       setEndDate(item.endDate)
-      setBarStyle(item.barStyle ?? defaultStyle)
+      setBarStyle(item.barStyle ?? defaultBarStyle)
       setLabelStyle(item.labelStyle ?? defaultLabelStyle)
       setFirstCell(startCell.props.date)
       setEndCell(lastCell.props.date)
       setTTPosition(tooltipPosition)
       setSteps(step)
-      setCallback((e)=>item.onItemClick ?? defaultFunc)
+      setCallback((e) => item.onItemClick ?? defaultFunc)
+      setColorMode(colorTheme)
     }
-  }, [item, step, lastCell.props.date, startCell.props.date, tooltipPosition])
+  }, [item, step, lastCell.props.date, startCell.props.date, tooltipPosition, colorTheme])
   const styles = {
-    ...barStyle,
+    ...barStyle[colorMode],
     left: !isNaN(position.from) ? position.from : 0,
     width: !isNaN(position.to) ? position.to : 0
   }
@@ -106,14 +107,14 @@ const Bar = ({ item, startCell, lastCell, step, tooltipPosition, tUnit, }) => {
 
   return (
     <Tooltip title={
-      <div style={{width: '100%',margin:'0', backgroundColor: 'black'}}>
+      <div style={{width: '100%',margin:'0'}}>
         <p>{item.label}</p>
         <p>{`Start:  ${formattedDate(startDateObj)}`}</p>
         <p>{`End:   ${formattedDate(endDateObj)}`}</p>
       </div>
     } placement={TTPosition ? TTPosition : 'top'}>
       <div id={item.id} className="bar" style={styles} onClick={callback}>
-        <p ref={textRef} className="bar-label" style={labelStyle}>{label}</p>
+        <p ref={textRef} className="bar-label" style={labelStyle[colorMode]}>{label}</p>
       </div>
     </Tooltip>
     )

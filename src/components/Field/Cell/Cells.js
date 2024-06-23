@@ -1,8 +1,9 @@
 
-const Cells = ({ colorTheme, i, date }) => {
+const Cells = ({ colorTheme, i, date, globalStyle }) => {
   return (
     <div
-      className={`field-cells ${colorTheme}`}
+      className={`field-cells`}
+      style={globalStyle}
       key={date}
       id={date}
     >

@@ -44,7 +44,7 @@ root.render(
     <Gantt
       items={items}
       fieldSettings={undefined}
-      globalSettings={undefined}
+      globalSettings={{colorMode:'light'}}
       />
   </>
 );

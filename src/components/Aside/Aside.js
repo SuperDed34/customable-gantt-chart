@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './Aside.css'
 
-const Aside = ({ items, fieldSettings, colorMode }) => {
+const Aside = ({ items, fieldSettings, colorMode, globalStyle }) => {
   const { hideList, listPosition, listWdt, listHeaderLabel } = fieldSettings.listSettings
   
   const { rowHeight, minRows } = fieldSettings
@@ -10,6 +10,7 @@ const Aside = ({ items, fieldSettings, colorMode }) => {
   const [position, setPosition] = useState()
   const [listWidth, setListWidth] = useState()
   const [label, setLabel] = useState('')
+  const [asideGlobalStyle, setAsideGlobalStyle] = useState()
 
   useEffect(() => {
     setClrMode(colorMode)
@@ -17,20 +18,21 @@ const Aside = ({ items, fieldSettings, colorMode }) => {
     setPosition(listPosition)
     setListWidth(visibility ? 0 : listWdt)
     setLabel(listHeaderLabel)
-        
+    setAsideGlobalStyle(globalStyle)
   }, [
     colorMode,
     hideList,
     listWdt,
     listPosition,
     listHeaderLabel,
-    visibility
+    visibility,
+    globalStyle
   ])
-
+  console.log(globalStyle)
   const style = {
+    ...asideGlobalStyle,
     visibility: visibility ? 'hidden' : 'visible',
-    flexDirection: position === 'left' ? 'row' : 'row-reversed',
-    width: `${listWidth}px`
+    flexDirection: position === 'left' ? 'row' : 'row-reversed'
   }
 
   const adaptiveFontSize = (item) => {
@@ -45,20 +47,20 @@ const Aside = ({ items, fieldSettings, colorMode }) => {
 
     items.map((item, idx) => {
       const text = item.label.length > 155 ? item.label.slice(0, 155) + '...' : item.label
-      rows.push(<div key={idx} className='aside-cell' style={{height: `${rowHeight - 0.8}px`, fontSize: adaptiveFontSize(item)}}>
+      rows.push(<div key={idx} className='aside-cell' style={{...style, height: `${rowHeight - 0.8}px`, fontSize: adaptiveFontSize(item)}}>
         {text}
       </div>)
       return item
     })
     while (rows.length < minRows) {
-      rows.push(<div key={rows.length} className='aside-cell' style={{height: `${rowHeight - 0.8}px`}}>
+      rows.push(<div key={rows.length} className='aside-cell' style={{...style, height: `${rowHeight - 0.8}px`}}>
 
       </div>)
     }
 
   return (
-    <div className={`aside ${clrMode}`} style={style}>
-      <div className='aside-cell' >{label}</div>
+    <div className={`aside ${clrMode}`} style={{ width: `${listWidth}px` }}>
+      <div className='aside-cell' style={style} >{label}</div>
         {rows}
       </div>
     )

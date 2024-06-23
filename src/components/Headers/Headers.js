@@ -1,13 +1,22 @@
+import { useEffect, useState } from "react";
 import { timeStampHandler } from "../../services/dateHandlerService";
 import './Headers.css'
 
-const Headers = ({ dates, colorMode, timeUnit }) => {
+const Headers = ({ dates, colorMode, globalStyle, timeUnit }) => {
+  console.log(globalStyle)
+
+  const [headerGlobalStyle, setHeaderGlobalStyle] = useState()
+  
+  useEffect(() => {
+    setHeaderGlobalStyle(globalStyle.header)
+
+  },[dates, globalStyle.header, colorMode])
 
   if (!dates) {
     return null
   }
 
-
+  const styles = { ...headerGlobalStyle }
   return (
     <div className="header-row">
       {dates.map(date => {
@@ -21,7 +30,7 @@ const Headers = ({ dates, colorMode, timeUnit }) => {
               : `${day}/${month}/${year}`
 
         return (
-          <div key={formattedDate} className={`headers ${colorMode}`}>{formattedDate}</div>
+          <div key={formattedDate} className='headers' style={styles}>{formattedDate}</div>
         )
       })}
     </div>
