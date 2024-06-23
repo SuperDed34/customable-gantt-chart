@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Field from './components/Field/Field'
 import './Gantt.css'
 import Aside from './components/Aside/Aside'
-import { fontSize, textAlign } from '@mui/system'
+import Loading from './components/Loading/Loading'
 
 const defaultGlobalSettings = {
   timeUnit: 'day',
@@ -39,7 +39,6 @@ function Gantt({ items, fieldSettings=defaultFieldSettings, globalSettings=defau
             backgroundColor: 'green',
             zIndex: '1',
             textAlign: 'center',
-            
           }
         },
     ]
@@ -48,29 +47,46 @@ function Gantt({ items, fieldSettings=defaultFieldSettings, globalSettings=defau
   const { listPosition } = fieldSettings.listSettings
   const [aside, setAside] = useState()
   const [settings, setSettings] = useState()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setSettings(globalSettings)
     setAside(listPosition)
+    setLoading(false)
   }, [globalSettings, listPosition])
 
   const listPos = aside === 'left' ? 'row' : 'row-reverse'
+
+  const View = () => {
+
   return (
-    <div className="gantt" style={{ flexDirection: listPos}}>
+    <div className="gantt" style={{ flexDirection: listPos }}>
       <Aside
         items={items}
         fieldSettings={fieldSettings}
-        colorMode={settings ? settings.colorMode : 'light'} 
+        colorMode={settings ? settings.colorMode : 'light'}
       />
       <Field
         items={items}
         fieldSettings={fieldSettings}
-        timeUnit={globalSettings.timeUnit} 
-        colorTheme={settings ? settings.colorMode : 'light'} 
-        tooltipPosition={settings ? settings.tooltipPosition : 'top'} 
+        timeUnit={globalSettings.timeUnit}
+        colorTheme={settings ? settings.colorMode : 'light'}
+        tooltipPosition={settings ? settings.tooltipPosition : 'top'}
       />
-    </div>
-  );
+      </div>
+  )
 }
+
+  return (
+    <>
+      {
+        loading
+        ? <Loading/>
+        : <View/>
+      }
+    </>
+  )
+}
+
 
 export default Gantt;

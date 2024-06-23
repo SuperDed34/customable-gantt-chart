@@ -14,7 +14,7 @@ Welcome to the customable-gantt-chart! This open-source project provides a flexi
 - **Responsive Design**: The chart adjusts seamlessly to different screen sizes.
 - **Lightweight**: Minimal dependencies ensure fast performance and ease of use.
 
-## Installation for update
+## Installation from GitHub:
 
 To get started, you can fork this repository and clone the repository from your GitHub:
 
@@ -22,3 +22,12 @@ To get started, you can fork this repository and clone the repository from your 
 git clone https://github.com/SuperDed34/customable-gantt-chart.git
 
 
+istall all dependencies:
+
+```sh
+npm install
+
+For using in your project import ''Gantt'' component from components:
+
+```sh
+import Gantt from './Gantt'
