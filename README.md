@@ -20,14 +20,16 @@ To get started, you can fork this repository and clone the repository from your 
 
 ```sh
 git clone https://github.com/SuperDed34/customable-gantt-chart.git
-
+```
 
 istall all dependencies:
 
 ```sh
 npm install
+```
 
 For using in your project import ''Gantt'' component from components:
 
 ```sh
 import Gantt from './Gantt'
+```
