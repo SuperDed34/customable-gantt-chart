@@ -44,6 +44,8 @@ Gantt component get 3 objects as props = **items**, **fieldSetings**, **globalSe
       />
 ```
 
+Delete default index.js and index.css
+
 **Items Object:**
 Items prop contains array of objects. Each object is equial 1 task, if items is undefined default value from default.js will be taken. You can customize default appiarence. Styles could be an centralized object or customized for each bar. Example of stucture:
 
