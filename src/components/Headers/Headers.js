@@ -20,7 +20,7 @@ const Headers = ({ dates, colorMode, globalStyle, timeUnit }) => {
   return (
     <div className="header-row">
       {dates.map(date => {
-        const { year, month, day } = timeStampHandler(date);
+        const { year, month, day } = timeStampHandler(date)
         const formattedDate = timeUnit === 'day'
           ? `${day}/${month}/${year}`
           : timeUnit === 'month'
