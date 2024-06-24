@@ -8,9 +8,11 @@ const Headers = ({ dates, colorMode, globalStyle, timeUnit }) => {
   const [headerGlobalStyle, setHeaderGlobalStyle] = useState()
   
   useEffect(() => {
-    setHeaderGlobalStyle(globalStyle.header)
+    if (globalStyle?.header) {
+      setHeaderGlobalStyle(globalStyle.header)
+    }
 
-  },[dates, globalStyle.header, colorMode])
+  },[globalStyle.header, colorMode])
 
   if (!dates) {
     return null

@@ -1,39 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import './Aside.css'
 
 const Aside = ({ items, fieldSettings, colorMode, globalStyle }) => {
   const { hideList, listPosition, listWdt, listHeaderLabel } = fieldSettings.listSettings
-  
   const { rowHeight, minRows } = fieldSettings
-  const [clrMode, setClrMode] = useState()
-  const [visibility, setVisibility] = useState()
-  const [position, setPosition] = useState()
-  const [listWidth, setListWidth] = useState()
-  const [label, setLabel] = useState('')
-  const [asideGlobalStyle, setAsideGlobalStyle] = useState()
+
+  const [visibility, setVisibility] = useState(hideList)
+  const [listWidth, setListWidth] = useState(hideList ? 0 : listWdt)
+  const [asideGlobalStyle, setAsideGlobalStyle] = useState(globalStyle)
 
   useEffect(() => {
-    setClrMode(colorMode)
     setVisibility(hideList)
-    setPosition(listPosition)
-    setListWidth(visibility ? 0 : listWdt)
-    setLabel(listHeaderLabel)
+    setListWidth(hideList ? 0 : listWdt)
     setAsideGlobalStyle(globalStyle)
-  }, [
-    colorMode,
-    hideList,
-    listWdt,
-    listPosition,
-    listHeaderLabel,
-    visibility,
-    globalStyle
-  ])
-  console.log(globalStyle)
-  const style = {
+  }, [hideList, listWdt, globalStyle])
+
+  const style = useMemo(() => ({
     ...asideGlobalStyle,
     visibility: visibility ? 'hidden' : 'visible',
-    flexDirection: position === 'left' ? 'row' : 'row-reversed'
-  }
+    flexDirection: listPosition === 'left' ? 'row' : 'row-reverse'
+  }), [asideGlobalStyle, visibility, listPosition])
 
   const adaptiveFontSize = (item) => {
     return item.label.length < 44
@@ -41,29 +27,31 @@ const Aside = ({ items, fieldSettings, colorMode, globalStyle }) => {
       : item.label.length < 66
         ? '0.6rem'
         : '0.5rem'
-  }
+  };
 
-  const rows = []
-
-    items.map((item, idx) => {
+  const generateRows = (items, rowHeight, minRows) => {
+    const rows = items.map((item, idx) => {
       const text = item.label.length > 155 ? item.label.slice(0, 155) + '...' : item.label
-      rows.push(<div key={idx} className='aside-cell' style={{...style, height: `${rowHeight - 0.8}px`, fontSize: adaptiveFontSize(item)}}>
-        {text}
-      </div>)
-      return item
-    })
-    while (rows.length < minRows) {
-      rows.push(<div key={rows.length} className='aside-cell' style={{...style, height: `${rowHeight - 0.8}px`}}>
+      return (
+        <div key={idx} className='aside-cell' style={{ ...style, height: `${rowHeight - 0.8}px`, fontSize: adaptiveFontSize(item) }}>
+          {text}
+        </div>
+      );
+    });
 
-      </div>)
+    while (rows.length < minRows) {
+      rows.push(<div key={rows.length} className='aside-cell' style={{ ...style, height: `${rowHeight - 0.8}px` }} />);
     }
 
+    return rows
+  };
+
   return (
-    <div className={`aside ${clrMode}`} style={{ width: `${listWidth}px` }}>
-      <div className='aside-cell' style={style} >{label}</div>
-        {rows}
-      </div>
-    )
-}
+    <div className={`aside ${colorMode}`} style={{ width: `${listWidth}px` }}>
+      <div className='aside-cell' style={style}>{listHeaderLabel}</div>
+      {generateRows(items, rowHeight, minRows)}
+    </div>
+  );
+};
 
 export default Aside
