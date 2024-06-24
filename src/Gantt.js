@@ -25,7 +25,6 @@ const Gantt = ({
   }, [globalSettings.globalStyle, globalSettings, fieldSettings.listSettings.listPosition])
 
   const listPos = aside === 'left' ? 'row' : 'row-reverse'
-  console.log(globalStyle)
   const viewStyle = useMemo(() => ({
     ...defaultGlobalSettings.globalStyle,
     ...globalSettings.globalStyle,

@@ -3,8 +3,6 @@ import { timeStampHandler } from "../../services/dateHandlerService";
 import './Headers.css'
 
 const Headers = ({ dates, colorMode, globalStyle, timeUnit }) => {
-  console.log(globalStyle)
-
   const [headerGlobalStyle, setHeaderGlobalStyle] = useState()
   
   useEffect(() => {
